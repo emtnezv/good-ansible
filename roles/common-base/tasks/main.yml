@@ -1,0 +1,22 @@
+---
+# common setup and packages for each instance
+
+- name: 'enable sudo without tty'
+  replace:
+    path: /etc/sudoers
+    regexp: '^Defaults\s*requiretty'
+    replace: 'Defaults  !requiretty'
+    backup: yes
+
+- name: 'enable repositories'
+  template:
+    src: repos_template.j2
+    dest: /etc/yum.repos.d/open_three-tier-app.repo
+    mode: 0644
+
+
+- name: 'Install required packages for each instance'
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ install_packages }}"

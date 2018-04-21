@@ -1,0 +1,2 @@
+instance_type: haproxy
+install_packages: ['httpie','python-pip', 'haproxy']

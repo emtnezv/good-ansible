@@ -1,0 +1,8 @@
+- name: cleanup
+  hosts: all
+  gather_facts: false
+  become: true
+  vars_files:
+    - ../variables/cleaner.yml
+  roles:
+    - { role: cleaner }

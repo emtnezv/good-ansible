@@ -1,0 +1,65 @@
+---
+- name: 'check db config file'
+  stat:
+    path: "{{ postgres_data_dir }}/postgresql.conf"
+  register: conf_db_file
+
+- name: 'delete pg_log dir'
+  file:
+    state: absent
+    path: "{{ postgres_data_dir }}/"
+  when: conf_db_file.stat.path is not defined
+
+# initialice posgres
+- name: Initialice postgres
+  become: yes
+  command: "/usr/bin/postgresql-setup initdb"
+  when: conf_db_file.stat.path is not defined
+
+# Copy config files for income requests
+- name: Copy postgres config files
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ postgres_data_dir }}/{{ item }}"
+    owner: postgres
+    group: postgres
+    mode: 0600
+  with_items: "{{ config_postgres_files }}"
+
+#Start/Enable PostgreSQL
+- name: 'Ensure the PostgreSQL service is running and enabled'
+  become: yes
+  service:
+    name: "{{ instance_type }}"
+    state: started
+    enabled: yes
+
+
+# CREATE USER [] WITH PASSWORD '[]';
+
+- name: 'Create postgres user'
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: "{{ PSTQL_USER }}"
+    password: "{{ PSTQL_PASSWORD }}"
+
+# CREATE DATABASE []];
+
+- name: 'Create database'
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: "{{ PSTQL_DATABASE }}"
+
+# GRANT ALL PRIVILEGES ON DATABASE [] TO USER [] ;
+
+- name: Grant user privileges
+  become: yes
+  become_user: postgres
+  postgresql_privs:
+    db: "{{ PSTQL_DATABASE }}"
+    privs: ALL
+    type: database
+    role: "{{ PSTQL_USER }}"

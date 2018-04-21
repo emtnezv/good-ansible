@@ -1,0 +1,17 @@
+---
+
+- name: 'enable {{ instance_type }}'
+  service:
+    name: "{{ instance_type }}"
+    enabled: yes
+
+- name: 'configure haproxy'
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+
+- name: 'start {{ instance_type }}'
+  service:
+    name: "{{ instance_type }}"
+    state: restarted

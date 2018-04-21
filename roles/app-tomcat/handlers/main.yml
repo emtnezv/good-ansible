@@ -1,0 +1,6 @@
+---
+
+- name: 'start {{ instance_type }}'
+  service:
+    name: tomcat
+    state: started

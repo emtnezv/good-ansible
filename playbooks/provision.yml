@@ -1,0 +1,55 @@
+---
+
+# Setup load balancer layer
+
+- name: 'setup lb layer'
+  hosts: frontends
+  become: yes
+  vars_files:
+    - ../variables/haproxy.yml
+    - ../variables/secure.yml
+  roles:
+    - {name: common-base, tags: common-base}
+    - {name: lb-haproxy, tags: haproxy}
+  tags: haproxy
+
+# Setup application servers layer
+
+- name: 'setup tomcat layer'
+  hosts: apps
+  become: yes
+  gather_facts: false
+  vars_files:
+    - ../variables/app_tomcat.yml
+    - ../variables/secure.yml
+  roles:
+    - {name: common-base}
+    - {name: app-tomcat}
+  tags: tomcat
+
+# Setup postgresql servers
+
+- name: 'setup db layer'
+  hosts: appdbs
+  become: yes
+  gather_facts: false
+  vars_files:
+    - ../variables/postgresql.yml
+    - ../variables/secure.yml
+  roles:
+    - {name: common-base}
+    - {name: postgres-db}
+  tags: database
+
+# Test app access
+
+- name: 'Test App'
+  hosts: frontends
+  become: yes
+  gather_facts: false
+  vars_files:
+    - ../variables/tests.yml
+  roles:
+    - {name: test-app}
+  tags: tests
+...

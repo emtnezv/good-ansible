@@ -1,0 +1,4 @@
+export GUID=ebe4
+#export MYKEY=~/.ssh/id_rsa
+export MYKEY=~/.ssh/ebe4key.pem
+export MYUSER=enmartin-redhat.com

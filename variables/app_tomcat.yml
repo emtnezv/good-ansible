@@ -1,0 +1,4 @@
+instance_type: tomcat
+webserver: httpd
+install_packages: ['httpie','python-pip', 'tomcat', 'httpd']
+webapps_root:  /usr/share/tomcat/webapps/ROOT

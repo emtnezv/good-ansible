@@ -1,0 +1,15 @@
+---
+
+- name: 'check tomcat serving via haproxy'
+  uri:
+    url: "{{ haproxy_url }}"
+    return_content: yes
+  register: result
+
+- name: 'Print frontend response'
+  debug:
+    msg: "{{ result }}"
+
+- name: Fail if Ansible is not in the page content
+  fail:
+  when: "'Ansible' not in result.content"

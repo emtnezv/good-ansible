@@ -1,0 +1,22 @@
+---
+
+- name: 'enable {{ instance_type }}'
+  service:
+    name: "{{ instance_type }}"
+    enabled: yes
+
+- name: 'create tomcat web directory'
+  file:
+    path: "{{ webapps_root }}"
+    state: directory
+
+- name: 'copy index.html to webapps_root'
+  template:
+    src: index.html.j2
+    dest: "{{ webapps_root}}/index.html"
+    mode: 0644
+
+- name: restart tomcat
+  service:
+    name: "{{ instance_type }}"
+    state: restarted

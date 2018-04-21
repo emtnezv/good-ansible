@@ -1,0 +1,46 @@
+---
+# Initial, common, system setup steps
+
+#All nodes
+- name: 'reverse the enabling of sudo without tty for some ansible commands'
+  replace:
+    path: /etc/sudoers
+    regexp: 'Defaults\s*!requiretty'
+    replace: '^Defaults requiretty'
+    backup: yes
+
+- name: 'Remove repo file'
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items: "{{ repo_to_remove }}"
+
+#App nodes
+- name: 'check index file'
+  stat:
+    path: "{{ webapps_root }}/index.html"
+  register: index_file
+
+- name: 'Remove index.html'
+  file:
+    state: absent
+    path: "{{ webapps_root }}/index.html"
+  when: index_file.stat.path is defined
+
+- name: 'remove base tools and three tier app packages'
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ remove_packages }}"
+
+#Database node
+- name: 'check db config file'
+  stat:
+    path: "{{ postgres_data_dir }}/postgresql.conf"
+  register: conf_db_file
+
+- name: 'delete Data dir content'
+  file:
+    state: absent
+    path: "{{ postgres_data_dir }}/"
+  when: conf_db_file.stat.path is defined
