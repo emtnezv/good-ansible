@@ -1,8 +1,7 @@
 # good-ansible
 
-toc::[]
 
-== Overview
+#Overview
 
 Good Ansible is a "Good" version of the repo `bad-ansible` used for training purposes.
 
@@ -10,7 +9,7 @@ Good Ansible is a "Good" version of the repo `bad-ansible` used for training pur
 
 Inventory file hosts, ssh.cfg reflect a particular lab environment and this will need modified to be used elsewhere.
 
-=== ssh.cfg
+#ssh.cfg
 
 This, optional, configuration file assumes the use of a `bastion` or `local laptop`
 and in some environments will be unnecessary or alternatively the `~/.ssh/config`
@@ -18,7 +17,7 @@ and in some environments will be unnecessary or alternatively the `~/.ssh/config
 
 `ansible.cfg` references `ssh.cfg`.
 
-=== provision.sh
+## provision.sh
 
 This script was provided to simplify usually operations, and configurations.
 
@@ -34,7 +33,7 @@ This script was provided to simplify usually operations, and configurations.
 
 `provision.sh tests:` Apply tests over frontend and app-servers
 
-=== secret
+## secret
 
 Some files were protected with vault, so a password is need during the script execution.
 
