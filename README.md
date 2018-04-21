@@ -1,7 +1,7 @@
 # good-ansible
 
 
-##Overview
+## Overview
 
 Good Ansible is a "Good" version of the repo `bad-ansible` used for training purposes.
 
@@ -9,7 +9,7 @@ Good Ansible is a "Good" version of the repo `bad-ansible` used for training pur
 
 Inventory file hosts, ssh.cfg reflect a particular lab environment and this will need modified to be used elsewhere.
 
-##ssh.cfg
+## ssh.cfg
 
 This, optional, configuration file assumes the use of a `bastion` or `local laptop`
 and in some environments will be unnecessary or alternatively the `~/.ssh/config`
